@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Netmeds Scrapping</title>
+    <title>Truemeds Scrapping</title>
     <style>
         .item-container {
             display: flex;
@@ -26,18 +26,19 @@
     </style>
 </head>
 <body>
-    <center><h1>Web Scraping Results for Netmeds</h1></center>
+    <center><h1>Web Scraping Results for Turemeds</h1></center>
     <a href="{{ '/' }}">
         <button>Go Back</button>
     </a>
     <br/><br/>
 
     <div class="item-container">
-        {% for index in range(data.Title|length) %}
+        {% for index in data %}
             <div class="item-box">
-                <img src="{{ data.ImageUrl[index] }}" alt="Product Image">
-                <p>{{ data.Title[index] }}</p>
-                <p>Price: {{ data.Price[index] }}</p>
+                <img src="{{ index.ImageUrl }}" alt="Product Image">
+                <p>{{ index.Title }}</p>
+                <p>Price: {{ index.Price }}</p>
+                <p><a href="{{ index.ProductLink }}">Product Link</a></p>
             </div>
         {% endfor %}
     </div>

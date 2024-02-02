@@ -33,11 +33,11 @@
     <br/><br/>
 
     <div class="item-container">
-        {% for index in range(data.Title|length) %}
+        {% for index in data %}
             <div class="item-box">
-                <img src="{{ data.ImageUrl[index] }}" alt="Product Image">
-                <p>{{ data.Title[index] }}</p>
-                <p>Price: {{ data.Price[index] }}</p>
+                <img src="{{ index.ImageUrl }}" alt="Product Image">
+                <p>{{ index.Title }}</p>
+                <p>Price: {{ index.Price }}</p>
             </div>
         {% endfor %}
     </div>

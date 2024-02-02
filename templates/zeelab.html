@@ -27,14 +27,19 @@
 </head>
 <body>
     <center><h1>ZeeLab Pharmacy - Bone & Joints Products</h1></center>
+    <a href="{{ '/' }}">
+        <button>Go Back</button>
+    </a>
+    <br/><br/>
+   
     <div class="item-container">
         {% for index in range(data['Title']|length) %}
             <div class="item-box">
-                <img src="{{ data['Image Url'][index] }}" alt="Product Image">
+                <img src="{{ data['ImageUrl'][index] }}" alt="Product Image">
                 <p>{{ data['Title'][index] }}</p>
-                <p>Price: {{ data['Product Price'][index] }}</p>
-                <p><a href="{{ data['Product Link'][index] }}">Product Link</a></p>
-                <p>{{ data['Product Info'][index] }}</p>
+                <p>Price: {{ data['Price'][index] }}</p>
+                <p><a href="{{ data['ProductLink'][index] }}">Product Link</a></p>
+                <p>{{ data['ProductInfo'][index] }}</p>
             </div>
         {% endfor %}
     </div>
