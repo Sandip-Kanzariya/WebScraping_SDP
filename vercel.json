@@ -3,7 +3,7 @@
     "builds": [
         {
             "src": "*.py",
-            "use": ""
+            "use": "flask"
         }
     ],
     "routes": [
