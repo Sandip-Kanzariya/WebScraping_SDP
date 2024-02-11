@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "builds": [
+        {
+            "src": "*.py",
+            "use": ""
+        }
+    ],
+    "routes": [
+        {
+            "src": "(.*)",
+            "dest": "scraper.py"
+        }
+    ]
+}
