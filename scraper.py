@@ -3,11 +3,9 @@ import subprocess as sp
 from pymongo import MongoClient
 from mongopass import mongopass
 
-import pandas as pd
 import requests
 from bs4 import BeautifulSoup
-import numpy as np
-import csv
+
 
 app = Flask(__name__)
 
