@@ -24,6 +24,7 @@ def netmeds_data():
     title_list = []
     price_list = []
     image_url_list = []
+    product_link_list = []
 
     for i in range(1, 4):
         url = f"https://www.netmeds.com/non-prescriptions/ayush/homeopathy/page/{i}"
@@ -50,6 +51,10 @@ def netmeds_data():
                 # Take Title
                 item = item.find_all('a', class_="category_name")
                 item = item[0]
+
+                # Take Product Link
+                product_link_list.append(item['href'])
+
                 title = item.find_all('span', class_="clsgetname")
                 title_list.append(title[0].text)
                 price_list.append(price.text)
@@ -58,10 +63,11 @@ def netmeds_data():
                 netmeds.insert_one({
                     'Title': title[0].text,
                     'Price': price.text,
+                    'ProductLink': item['href'], 
                     'ImageUrl': image['src']
                 })
 
-    results = {'Title': title_list, 'Price': price_list, 'ImageUrl': image_url_list}
+    results = {'Title': title_list, 'Price': price_list, 'ProductLink': product_link_list,'ImageUrl': image_url_list}
 
     return render_template('netmeds.html', data=results)
 
@@ -230,5 +236,23 @@ def truemeds_data_db():
 
 # ---------------------------------------------------------------------------
 
+@app.route('/netmeds-db-search')
+def netmeds_data_db_search():
+
+    # Get the search keyword from the URL
+    search_keyword = request.args.get('q')
+
+    # Fetch data from the 'netmeds' collection
+    data_from_db = list(netmeds.find({'Title': {'$regex': search_keyword, '$options': 'i'}}))
+    # Fetch data from the 'truemeds' collection
+    data_from_db += list(truemeds.find({'Title': {'$regex': search_keyword, '$options': 'i'}}))
+    # Fetch data from the 'zeeLab' collection
+    data_from_db += list(zeeLab.find({'Title': {'$regex': search_keyword, '$options': 'i'}}))
+
+    # print(data_from_db)
+    # # Render the data to the respective HTML page
+    return render_template('zeelab_db.html', data=data_from_db)
+
+# ---------------------------------------------------------------------------
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=5000, debug=True)
