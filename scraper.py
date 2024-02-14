@@ -12,7 +12,7 @@ app = Flask(__name__)
 client = MongoClient(mongopass)
 db = client.webScaping
 netmeds = db.netmeds
-zeeLab = db.zeeLab
+zeelab = db.zeelab
 truemeds = db.truemeds
 
 @app.route('/')
@@ -125,7 +125,7 @@ def zeelab_data():
         image_url_list.append(image_url)
         
         # Store data in MongoDB
-        zeeLab.insert_one({
+        zeelab.insert_one({
             'Title': name,
             'ProductLink': link,
             'Price': price,
@@ -220,15 +220,15 @@ def netmeds_data_db():
 
 @app.route('/zeelab-db')
 def zeelab_data_db():
-    # Fetch data from the 'zeeLab' collection
-    data_from_db = list(zeeLab.find())
+    # Fetch data from the 'zeelab' collection
+    data_from_db = list(zeelab.find())
 
     # Render the data to the respective HTML page
     return render_template('zeelab_db.html', data=data_from_db)
 
 @app.route('/truemeds-db')
 def truemeds_data_db():
-    # Fetch data from the 'zeeLab' collection
+    # Fetch data from the 'zeelab' collection
     data_from_db = list(truemeds.find())
 
     # Render the data to the respective HTML page
@@ -236,8 +236,8 @@ def truemeds_data_db():
 
 # ---------------------------------------------------------------------------
 
-@app.route('/netmeds-db-search')
-def netmeds_data_db_search():
+@app.route('/title-search')
+def title_search():
 
     # Get the search keyword from the URL
     search_keyword = request.args.get('q')
@@ -246,12 +246,45 @@ def netmeds_data_db_search():
     data_from_db = list(netmeds.find({'Title': {'$regex': search_keyword, '$options': 'i'}}))
     # Fetch data from the 'truemeds' collection
     data_from_db += list(truemeds.find({'Title': {'$regex': search_keyword, '$options': 'i'}}))
-    # Fetch data from the 'zeeLab' collection
-    data_from_db += list(zeeLab.find({'Title': {'$regex': search_keyword, '$options': 'i'}}))
+    # Fetch data from the 'zeelab' collection
+    data_from_db += list(zeelab.find({'Title': {'$regex': search_keyword, '$options': 'i'}}))
 
     # print(data_from_db)
     # # Render the data to the respective HTML page
     return render_template('zeelab_db.html', data=data_from_db)
+
+# ---------------------------------------------------------------------------
+@app.route('/content-search')
+def content_search():
+    
+        # Get the search keyword from the URL
+        search_keyword = request.args.get('q')
+
+        # Fetch data from the 'zeelab' collection
+        data_from_db = list(zeelab.find({'ProductInfo': {'$regex': search_keyword, '$options': 'i'}}))
+    
+        # print(data_from_db)
+        # # Render the data to the respective HTML page
+        return render_template('zeelab_db.html', data=data_from_db)
+
+@app.route('/price-filter')
+def price_filter(): 
+
+    # Get the search keyword from the URL
+    min_price = request.args.get('min')
+    max_price = request.args.get('max')
+
+    # Fetch data from the 'netmeds' collection
+    data_from_db = list(netmeds.find({'Price': {'$gte': min_price, '$lte': max_price}}))
+    # Fetch data from the 'truemeds' collection
+    data_from_db += list(truemeds.find({'Price': {'$gte': min_price, '$lte': max_price}}))
+    # Fetch data from the 'zeelab' collection
+    data_from_db += list(zeelab.find({'Price': {'$gte': min_price, '$lte': max_price}}))
+
+    # print(data_from_db)
+    # # Render the data to the respective HTML page
+    return render_template('zeelab_db.html', data=data_from_db)
+
 
 # ---------------------------------------------------------------------------
 if __name__ == '__main__':

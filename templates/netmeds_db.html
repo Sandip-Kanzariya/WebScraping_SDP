@@ -35,10 +35,10 @@
     <div class="item-container">
         {% for index in data %}
             <div class="item-box">
-                <img src="{{ index.ImageUrl }}" alt="Product Image">
+                <a href="{{index.ProductLink}}" target="_blank"><img src="{{ index.ImageUrl }}" alt="Product Image"></a>
                 <p>{{ index.Title }}</p>
                 <p>Price: {{ index.Price }}</p>
-                <p><a href="{{ index.ProductLink }}">Product Link</a></p>
+                <p><a href="{{ index.ProductLink }} " target="_blank">Product Link</a></p>
             </div>
         {% endfor %}
     </div>

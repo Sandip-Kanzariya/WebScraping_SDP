@@ -14,10 +14,27 @@
     <center>
         <h1>Select </h1>
 
-        <form action="/netmeds-db-search" method="get">
-            <label for="search">Search:</label>
-            <input type="text" id="search" name="q">
+        <form action="/title-search" method="get">
+            <label for="search">Search By Name :</label>
+            <input type="text" placeholder="Medicin Name" id="search" name="q">
             <button type="submit">Search</button>
+        </form>
+        <br>
+        <form action="/content-search" method="get">
+            <label for="search">Search By Content :</label>
+            <input type="text" placeholder="Medicin Contain ..." id="search" name="q">
+            <button type="submit">Search</button>
+        </form>
+
+        <br>
+        <form action="/price-filter" method="get">
+            <label for="min_price">Minimum Price:</label>
+            <input type="number" id="min_price" name="min" step="10" value="10" min="10" max="10000">
+            <br>
+            <label for="max_price">Maximum Price:</label>
+            <input type="number" id="max_price" name="max" step="10" value="500" min="10" max="10000">
+            <br>
+            <button type="submit">Filter</button>
         </form>
 
     </center>
