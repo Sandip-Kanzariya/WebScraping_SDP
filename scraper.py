@@ -10,7 +10,7 @@ from bs4 import BeautifulSoup
 app = Flask(__name__)
 
 client = MongoClient(mongopass)
-db = client.webScaping
+db = client.webScraping
 netmeds = db.netmeds
 zeelab = db.zeelab
 truemeds = db.truemeds
@@ -41,6 +41,10 @@ def netmeds_data():
                 # Take Price
                 price = item.find_all('span', class_="price-box")
                 price = price[0].find('span')
+                price = price.text.strip()  # Removing spaces before and after the string
+                price = price[1:]           # Removing '₹' symbol
+                price = price.strip()       # Removing spaces before and after the string
+                price = float(price)
 
                 # Take Imgae URL
                 image = item.find_all('span', class_="cat-img")
@@ -57,12 +61,12 @@ def netmeds_data():
 
                 title = item.find_all('span', class_="clsgetname")
                 title_list.append(title[0].text)
-                price_list.append(price.text)
+                price_list.append(price)
                 
                 # Store data in MongoDB
                 netmeds.insert_one({
                     'Title': title[0].text,
-                    'Price': price.text,
+                    'Price': price,
                     'ProductLink': item['href'], 
                     'ImageUrl': image['src']
                 })
@@ -115,7 +119,10 @@ def zeelab_data():
 
         # For Product Price
         price = product.find('span', class_='newProductPrice')
-        price = price.text.strip()
+        price = price.text.strip()    # Removing spaces before and after the string
+        price = price[1:]             # Removing '₹' symbol
+        price = price.strip()         # Removing spaces before and after the string
+        price = float(price)
         price_list.append(price)
 
         # For Image URL
@@ -188,6 +195,7 @@ def truemeds_data():
         price = prd.find('div', class_='sc-70f3a4c3-6 jYrCfO')
         price = price.find_all('span')
         price = price[1].text
+        price = float(price)
         price_list.append(price)
         
         # Store data in MongoDB
@@ -254,6 +262,7 @@ def title_search():
     return render_template('zeelab_db.html', data=data_from_db)
 
 # ---------------------------------------------------------------------------
+
 @app.route('/content-search')
 def content_search():
     
@@ -267,12 +276,16 @@ def content_search():
         # # Render the data to the respective HTML page
         return render_template('zeelab_db.html', data=data_from_db)
 
+# ---------------------------------------------------------------------------
+
 @app.route('/price-filter')
 def price_filter(): 
 
     # Get the search keyword from the URL
     min_price = request.args.get('min')
+    min_price = float(min_price)
     max_price = request.args.get('max')
+    max_price = float(max_price)
 
     # Fetch data from the 'netmeds' collection
     data_from_db = list(netmeds.find({'Price': {'$gte': min_price, '$lte': max_price}}))
