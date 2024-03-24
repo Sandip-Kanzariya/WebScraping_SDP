@@ -19,6 +19,10 @@ truemeds = db.truemeds
 def index(): 
     return render_template('index.html')
 
+@app.route('/selector')
+def selector(): 
+    return render_template('selector.html')
+
 @app.route('/netmeds')
 def netmeds_data():
     title_list = []
@@ -79,7 +83,8 @@ def netmeds_data():
 @app.route('/zeelab')
 def zeelab_data():
 
-    url = f"https://zeelabpharmacy.com/health/bone-joints"
+    category = request.args.get('category', 'bone-joints')  # Default is 'bone-joints'
+    url = f"https://zeelabpharmacy.com/health/{category}"
     webpage=requests.get(url).text
 
     # webpage
