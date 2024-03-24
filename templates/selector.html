@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selector</title>
+</head>
+
+<body>
+
+    <!-- ZeeLab -->
+    <select id="healthCategories">
+        <option value="">Select a category</option>
+    </select>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const urls = [
+                "https://zeelabpharmacy.com/health/bone-joints",
+                "https://zeelabpharmacy.com/health/cold-flu",
+                "https://zeelabpharmacy.com/health/sugar-care",
+                "https://zeelabpharmacy.com/health/eye-ear",
+                "https://zeelabpharmacy.com/health/hair",
+                "https://zeelabpharmacy.com/health/heart-medicines",
+                "https://zeelabpharmacy.com/health/mens",
+                "https://zeelabpharmacy.com/health/multivitamins",
+                "https://zeelabpharmacy.com/health/nutrition",
+                "https://zeelabpharmacy.com/health/oral-care",
+                "https://zeelabpharmacy.com/health/personal",
+                "https://zeelabpharmacy.com/health/stomach",
+                "https://zeelabpharmacy.com/health/thyroid",
+                "https://zeelabpharmacy.com/health/womens",
+                "https://zeelabpharmacy.com/health/sexual",
+                "https://zeelabpharmacy.com/health/skinbeauty",
+                "https://zeelabpharmacy.com/health/acidity",
+                "https://zeelabpharmacy.com/health/asthma"
+            ];
+
+            const select = document.getElementById("healthCategories");
+
+            urls.forEach(url => {
+                const category = url.split("/").pop();
+                const option = document.createElement("option");
+                option.textContent = category.replace(/-/g, " ");
+                option.value = category;
+                select.appendChild(option);
+            });
+        });
+    </script>
+
+
+    <form action="/zeelab" method="GET">
+        <input type="hidden" name="category" id="selectedCategory">
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        const submitButton = document.querySelector("button[type='submit']");
+        const selectedCategory = document.getElementById("selectedCategory");
+        const select = document.getElementById("healthCategories");
+
+        submitButton.addEventListener("click", function (event) {
+            event.preventDefault();
+            selectedCategory.value = select.value;
+            this.closest("form").submit();
+        });
+    </script>
+
+    <!-- Net-Meds -->
+    <!-- 
+    <script>
+        const urls = [
+            "https://www.netmeds.com/non-prescriptions/ayush/homeopathy",
+            "https://www.netmeds.com/non-prescriptions/ayush/ayurvedic",
+            "https://www.netmeds.com/non-prescriptions/diabetes-support",
+            "https://www.netmeds.com/non-prescriptions/health-conditions/stomach-care",
+            "https://www.netmeds.com/non-prescriptions/health-conditions/stomach-care",
+            "https://www.netmeds.com/non-prescriptions/health-conditions/cardiac-care",
+            "https://www.netmeds.com/non-prescriptions/covid-essentials",
+            "https://www.netmeds.com/non-prescriptions/skin-care"
+        ];
+
+        const select = document.getElementById("healthCategories");
+
+        urls.forEach(url => {
+            const category = url.split("/").pop();
+            const option = document.createElement("option");
+            option.textContent = category.replace(/-/g, " ");
+            option.value = category;
+            select.appendChild(option);
+        });
+
+        const selectedCategory = document.getElementById("selectedCategory");
+        const selectValue = select.value;
+        const [param1, param2] = selectValue.split("/");
+        selectedCategory.value = `${param1}/${param2}`;
+    </script>
+     -->
+
+</body>
+
+</html>
