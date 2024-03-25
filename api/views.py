@@ -11,12 +11,11 @@ api.add_resource(netmeds.NetmedsList, "/netmeds")
 
 
 # 
-# api.add_resource(zeelab.ZeelabList, "/zeelab")
+api.add_resource(zeelab.ZeelabList, "/zeelab")
 
 
 # 
 api.add_resource(truemeds.TruemedsList, "/truemeds")
-
 
 @product_blueprint.errorhandler(ValidationError)
 def handle_marshmallow_error(e):
