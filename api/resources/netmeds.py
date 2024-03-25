@@ -1,6 +1,7 @@
 from flask_restful import Resource
 from bs4 import BeautifulSoup
 import requests
+from api.schemas.netmeds import NetmedsSchema
 from extensions import db
 from models.netmeds import Netmeds
 
@@ -9,7 +10,10 @@ class NetmedsList(Resource):
     
     def get(self):
         
-        return {'message': 'Hello, World!'}
+        netmeds_list = Netmeds.query.all()
+        schema = NetmedsSchema(many=True) # For Reteriving multiple users many = True
+        
+        return {"results" : schema.dump(netmeds_list)} # marshmallow serialize it to json
     
     def post(self):
         
