@@ -1,13 +1,35 @@
 from bs4 import BeautifulSoup
+from flask import request
 from flask_restful import Resource
 import requests
+from api.schemas.truemeds import TruemedsSchema
 from extensions import db
 from models.truemeds import Truemeds
 
+# http://127.0.0.1:5050/product/truemeds/
 class TruemedsList(Resource):
     
     def get(self):
-        pass
+        
+        name_filter = request.args.get('name')
+        min_price = request.args.get('min_price')
+        max_price = request.args.get('max_price')
+
+
+        truemeds_query = Truemeds.query
+
+        if name_filter:
+            truemeds_query = truemeds_query.filter(Truemeds.title.like(f'%{name_filter}%'))
+        if min_price:
+            truemeds_query = truemeds_query.filter(Truemeds.price >= min_price)   
+        if max_price:
+            truemeds_query = truemeds_query.filter(Truemeds.price <= max_price)
+
+        truemeds_list = Truemeds.query.all()
+        
+        schema = TruemedsSchema(many=True) # For Reteriving multiple users many = True
+
+        return {'results': schema.dump(truemeds_list)} # marshmallow serialize it to json
     
     def post(self):
         

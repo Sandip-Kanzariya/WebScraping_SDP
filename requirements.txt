@@ -9,3 +9,4 @@ flask-marshmallow
 marshmallow-sqlalchemy
 passlib
 flask-cors
+pytesseract

@@ -1,3 +1,4 @@
+from flask import request
 from flask_restful import Resource
 from bs4 import BeautifulSoup
 import requests
@@ -5,12 +6,26 @@ from api.schemas.netmeds import NetmedsSchema
 from extensions import db
 from models.netmeds import Netmeds
 
-
+# http://127.0.0.1:5050/product/netmeds/
 class NetmedsList(Resource):
     
     def get(self):
         
-        netmeds_list = Netmeds.query.all()
+        name_filter = request.args.get('name')
+        min_price = request.args.get('min_price')
+        max_price = request.args.get('max_price')
+
+
+        netmeds_query = Netmeds.query
+
+        if name_filter:
+            netmeds_query = netmeds_query.filter(Netmeds.title.like(f'%{name_filter}%'))
+        if min_price:
+            netmeds_query = netmeds_query.filter(Netmeds.price >= min_price)   
+        if max_price:
+            zeelab_query = zeelab_query.filter(Netmeds.price <= max_price)
+
+        netmeds_list = netmeds_query.all()
         schema = NetmedsSchema(many=True) # For Reteriving multiple users many = True
         
         return {"results" : schema.dump(netmeds_list)} # marshmallow serialize it to json
