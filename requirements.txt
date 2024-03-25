@@ -1,4 +1,10 @@
 Flask  
-BeautifulSoup
-pymongo
+bs4
 requests
+flask-sqlalchemy
+flask-restful
+python-dotenv
+flask-migrate
+flask-marshmallow
+marshmallow-sqlalchemy
+passlib

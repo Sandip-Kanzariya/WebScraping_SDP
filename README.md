@@ -1,27 +1,53 @@
-
-# Run Project 
-
+# Run Project
 
 ## Setting up a Python Virtual Environment and Installing Packages (py = python)
 
 ### Create Virtual Environment
-```bash 
-py -m venv .venv 
+
+```bash
+py -m venv .venv
 ```
+
 ### Activate Virtual Environment
-```bash 
-.venv\Scripts\activate 
+
+```bash
+.venv\Scripts\activate
 ```
 
 ### Install Packages From requirements.txt
+
 ```bash
 pip install -r requirements.txt
 ```
 
+### Database set up
 
-### Run Flask App 
 ```bash
-    flask --app script_file_name run
+flask shell
+from app import db
+db.create_all()
+```
+
+### Migration
+
+```shell
+flask db init
+
+flask db migrate -m "message"
+
+flask db upgrade
+
+```
+
+
+### Run Flask App (script_file_name = app.py)
+
+```bash
+flask --app script_file_name run
+
+or
+
+py script_file_name.py
 ```
 
 ## Team Members
@@ -57,4 +83,3 @@ pip install -r requirements.txt
     </td>
     </tr>
 </table>
-
