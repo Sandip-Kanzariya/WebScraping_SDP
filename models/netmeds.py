@@ -8,3 +8,4 @@ class Netmeds(db.Model):
     price = db.Column(db.Float)
     product_link = db.Column(db.String(200))
     image_url = db.Column(db.String(200))
+    
