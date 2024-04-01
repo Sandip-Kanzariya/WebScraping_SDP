@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, redirect, request, url_for
+from extensions import jwt
 from extensions import db, migrate, cors
 from auth.views import auth_blueprint
 from api.views import product_blueprint
@@ -12,10 +13,11 @@ from PIL import Image
 
 app = Flask(__name__)
 
-
-app.config.from_object("config")
+app.config.from_object("config") # Load configurations from config.py file
 db.init_app(app) 
 migrate.init_app(app, db)
+jwt.init_app(app)
+
 app.register_blueprint(blueprint=auth_blueprint)
 app.register_blueprint(blueprint=product_blueprint)
 

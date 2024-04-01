@@ -1,4 +1,5 @@
 from flask import request
+from flask_jwt_extended import jwt_required
 from flask_restful import Resource
 from bs4 import BeautifulSoup
 import requests
@@ -35,6 +36,7 @@ class ZeelabList(Resource):
 
         return {"results" : schema.dump(zeelab_list)} # marshmallow serialize it to json
         
+    # method_decorators = [jwt_required()]
     def post(self):
 
         category = request.args.get('category', 'bone-joints')  # Default is 'bone-joints'

@@ -10,3 +10,5 @@ marshmallow-sqlalchemy
 passlib
 flask-cors
 pytesseract
+flask-jwt-extended
+psycopg2 
