@@ -26,7 +26,16 @@ pip install -r requirements.txt
 flask shell
 from app import db
 db.create_all()
+
+with app.app_context():
+    db.create_all()
+
 ```
+### 
+|Database|Pip|
+|---|---|
+|PostgreSQL|pip install psycopg2 or pip install psycopg2-binary|
+|MySQL|pip install mysqlclient|
 
 ### Migration
 
@@ -38,7 +47,6 @@ flask db migrate -m "message"
 flask db upgrade
 
 ```
-
 
 ### Run Flask App (script_file_name = app.py)
 
