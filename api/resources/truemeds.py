@@ -87,5 +87,17 @@ class TruemedsList(Resource):
         
         results = {'Title': title_list, 'Price': price_list, 'ProductLink': product_link_list,'ImageUrl': image_url_list}
 
-        return {'data': results}
-                
+        # Create a new list to store objects
+        new_list = []
+
+        # Iterate through the lists simultaneously and create objects
+        for title, price, product_link, image_url in zip(results['Title'], results['Price'], results['ProductLink'], results['ImageUrl']):
+            new_object = {
+                'Title': title,
+                'Price': price,
+                'ProductLink': product_link,
+                'ImageUrl': image_url
+            }
+            new_list.append(new_object)
+
+        return {'data': new_list}        

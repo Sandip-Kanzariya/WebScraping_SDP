@@ -1,4 +1,4 @@
-from flask import Flask, redirect, request, url_for
+from flask import Flask, jsonify, redirect, request, url_for
 from extensions import db, migrate, cors
 from auth.views import auth_blueprint
 from api.views import product_blueprint
@@ -9,7 +9,6 @@ import os
 # Text Extraction From Image
 import pytesseract
 from PIL import Image
-pytesseract.pytesseract.tesseract_cmd = app.config.get("TESSERACT_CMD")
 
 app = Flask(__name__)
 
@@ -24,6 +23,8 @@ app.register_blueprint(blueprint=product_blueprint)
 cors.init_app(app) 
 
 
+pytesseract.pytesseract.tesseract_cmd = app.config.get("TESSERACT_CMD")
+
 app.secret_key = app.config.get("FLASK_SECRET_KEY")
 app.config["UPLOAD_FOLDER"] = app.config.get("IMAGE_UPLOAD_FOLDER")
 
@@ -31,7 +32,7 @@ app.config["UPLOAD_FOLDER"] = app.config.get("IMAGE_UPLOAD_FOLDER")
 @app.route('/uploader', methods=['GET', 'POST'])
 def upload():
     if request.method == 'POST':
-        f = request.files['image']
+        f = request.form['image']
         f.save(os.path.join(os.path.join(app.config['UPLOAD_FOLDER']), secure_filename(f.filename)))
         return redirect(url_for('medicine_image', filename=f.filename))
     return "No file uploaded."
@@ -52,7 +53,7 @@ def medicine_image():
     
     # this text need to be given to NLP Model for extracting medicine names...
     
-    return text
+    return jsonify(text)
 
 if __name__ == '__main__':
     app.run(
