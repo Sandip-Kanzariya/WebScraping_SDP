@@ -36,7 +36,7 @@ class ZeelabList(Resource):
 
         return {"results" : schema.dump(zeelab_list)} # marshmallow serialize it to json
         
-    # method_decorators = [jwt_required()]
+    @jwt_required()
     def post(self):
 
         category = request.args.get('category', 'bone-joints')  # Default is 'bone-joints'
