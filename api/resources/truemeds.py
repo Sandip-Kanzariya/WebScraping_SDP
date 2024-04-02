@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 from flask import request
+from flask_jwt_extended import jwt_required
 from flask_restful import Resource
 import requests
 from api.schemas.truemeds import TruemedsSchema
@@ -31,6 +32,7 @@ class TruemedsList(Resource):
 
         return {'results': schema.dump(truemeds_list)} # marshmallow serialize it to json
     
+    @jwt_required()
     def post(self):
         
         title_list = []
