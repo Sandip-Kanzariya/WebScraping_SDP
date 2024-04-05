@@ -1,3 +1,4 @@
+from functools import wraps
 from flask import Blueprint, request, jsonify
 from flask import current_app as app
 from flask_jwt_extended import create_access_token, create_refresh_token, get_current_user, get_jwt, get_jwt_identity, jwt_required
@@ -6,7 +7,7 @@ from auth.schemas.user import UserCreateSchema, UserSchema
 from extensions import db, pwd_context, jwt
 from marshmallow import ValidationError
 
-from models.users import User
+from models.users import Role, User, UserRole
 
 auth_blueprint = Blueprint("auth", __name__, url_prefix="/auth")
 
@@ -19,6 +20,13 @@ def register():
     user = schema.load(request.json)
 
     db.session.add(user)
+    db.session.commit()
+
+    user_id = user.id # Get the user id
+    admin_role_id = db.session.query(Role.id).filter_by(slug="admin").scalar() # Get the admin role id
+
+    user_role = UserRole(user_id=user_id, role_id=admin_role_id)
+    db.session.add(user_role)
     db.session.commit()
 
     schema = UserSchema()
