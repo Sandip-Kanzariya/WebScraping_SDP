@@ -2,6 +2,7 @@ from functools import wraps
 from flask import Blueprint, request, jsonify
 from flask import current_app as app
 from flask_jwt_extended import create_access_token, create_refresh_token, get_current_user, get_jwt, get_jwt_identity, jwt_required
+from auth.decorators import auth_role
 from auth.helper import add_token_to_database, is_token_revoked, revoke_token
 from auth.schemas.user import UserCreateSchema, UserSchema
 from extensions import db, pwd_context, jwt
@@ -12,6 +13,8 @@ from models.users import Role, User, UserRole
 auth_blueprint = Blueprint("auth", __name__, url_prefix="/auth")
 
 @auth_blueprint.route("/register", methods=["POST"])
+@jwt_required()
+@auth_role("super-admin") # Decorators for the methods
 def register():
     if not request.is_json:
         return {"message": "Missing JSON in request."}, 400
@@ -58,7 +61,15 @@ def login():
     
     return {"access_token": access_token, "refresh_token": refresh_token}, 200
 
+@auth_blueprint.route("/getrole", methods=["GET"])
+@jwt_required()
+def get_user_role():
+    user_id = get_jwt_identity()
+    user = User.query.get(user_id)
+    role_slug = user.roles[0].slug
+    return {"role": role_slug}, 200
 
+    
 @auth_blueprint.route("/refresh", methods=["POST"])
 @jwt_required(refresh=True)
 def refresh():

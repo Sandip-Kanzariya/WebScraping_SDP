@@ -4,6 +4,7 @@ from flask_restful import Resource
 from bs4 import BeautifulSoup
 import requests
 from api.schemas.netmeds import NetmedsSchema
+from auth.decorators import auth_role
 from extensions import db
 from models.netmeds import Netmeds
 
@@ -32,6 +33,7 @@ class NetmedsList(Resource):
         return {"results" : schema.dump(netmeds_list)} # marshmallow serialize it to json
     
     @jwt_required()
+    @auth_role("admin")
     def post(self):
         
         title_list = []
