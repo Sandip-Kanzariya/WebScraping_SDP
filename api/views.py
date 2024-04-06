@@ -1,4 +1,5 @@
 from flask import Blueprint, jsonify
+from flask_jwt_extended import jwt_required
 from flask_restful import Api
 from marshmallow import ValidationError
 from api.resources import netmeds, zeelab, truemeds
@@ -15,6 +16,7 @@ api.add_resource(zeelab.ZeelabList, "/zeelab")
 
 
 # 
+
 api.add_resource(truemeds.TruemedsList, "/truemeds")
 
 @product_blueprint.errorhandler(ValidationError)

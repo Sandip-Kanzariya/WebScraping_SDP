@@ -4,6 +4,7 @@ from flask_jwt_extended import jwt_required
 from flask_restful import Resource
 import requests
 from api.schemas.truemeds import TruemedsSchema
+from auth.decorators import auth_role
 from extensions import db
 from models.truemeds import Truemeds
 
@@ -33,6 +34,7 @@ class TruemedsList(Resource):
         return {'results': schema.dump(truemeds_list)} # marshmallow serialize it to json
     
     @jwt_required()
+    @auth_role("admin")
     def post(self):
         
         title_list = []

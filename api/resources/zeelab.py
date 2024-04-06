@@ -4,6 +4,7 @@ from flask_restful import Resource
 from bs4 import BeautifulSoup
 import requests
 from api.schemas.zeelab import ZeelabSchema
+from auth.decorators import auth_role
 from extensions import db
 from models.netmeds import Netmeds
 from models.zeelab import Zeelab
@@ -37,6 +38,7 @@ class ZeelabList(Resource):
         return {"results" : schema.dump(zeelab_list)} # marshmallow serialize it to json
         
     @jwt_required()
+    @auth_role("admin")
     def post(self):
 
         category = request.args.get('category', 'bone-joints')  # Default is 'bone-joints'

@@ -4,7 +4,7 @@ from extensions import db, migrate, cors
 from auth.views import auth_blueprint
 from api.views import product_blueprint
 
-# Imgae Store
+# Image Store
 from werkzeug.utils import secure_filename
 import os
 # Text Extraction From Image
