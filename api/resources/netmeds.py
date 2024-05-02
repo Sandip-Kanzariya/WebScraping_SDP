@@ -74,7 +74,7 @@ class NetmedsList(Resource):
                     # Take Product Link
                     product_link_list.append(item['href'])
 
-                    title = item.find_all('span', class_="clsgetname")
+                    title = item.find_all('h3', class_="clsgetname")
                     title_list.append(title[0].text)
                     price_list.append(price)
                     
