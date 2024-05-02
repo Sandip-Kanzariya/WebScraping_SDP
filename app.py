@@ -24,6 +24,9 @@ app.register_blueprint(blueprint=product_blueprint)
 # For supporting Cross-Origin Resource Sharing (CORS) so, the frontend can access the API.
 cors.init_app(app) 
 
+# Additional code to create database tables
+with app.app_context():
+    db.create_all()
 
 pytesseract.pytesseract.tesseract_cmd = app.config.get("TESSERACT_CMD")
 
