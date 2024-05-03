@@ -1,3 +1,7 @@
+# MedMinear Backend [RESTfull APIs using FLASK]
+
+> [Frontend](https://github.com/DigitalGit2003/WebScraping_Frontend)
+
 # Run Project
 
 ## Setting up a Python Virtual Environment and Installing Packages (py = python)
@@ -20,41 +24,61 @@ py -m venv .venv
 pip install -r requirements.txt
 ```
 
-### Database set up
+### Environment Variable Setup (env.env file make changes as per your need)
+```py
+FLASK_APP=app
+FLASK_DEBUG=True
+FLASK_RUN_PORT=5050
+FLASK_RUN_HOST=0.0.0.0
 
-```bash
-flask shell
-from app import db
-db.create_all()
+# For Remote PostgreSQL Database : postgresql://username:password@hostname:port/database_name
+SQLALCHEMY_DATABASE_URI=POSTGRESQL_REMOTE_URL
 
-with app.app_context():
-    db.create_all()
+JWT_SECRET_KEY = SELECTED_SECRET_KEY
+IMAGE_UPLOAD_FOLDER= PATH
+TESSERACT_CMD = PATH
+FLASK_SECRET_KEY = SELECTED_FLASK_SECRET_KEY
 
+# For Different Databases
+
+# For local SQLite Database
+# SQLALCHEMY_DATABASE_URI=sqlite:///db.sqlite3 
+
+# For local MySQL Database
+# SQLALCHEMY_DATABASE_URI=mysql://root:@localhost/flask 
+# For Remote MySQL Database
+# SQLALCHEMY_DATABASE_URI=MYSQL_FREEDATABASE_URL
+
+# For local PostgreSQL Database
+# SQLALCHEMY_DATABASE_URI=POSTGRESQL_LOCAL_URL
 ```
-### 
+
+### Install as per your database 
 |Database|Pip|
 |---|---|
 |PostgreSQL|pip install psycopg2 or pip install psycopg2-binary|
 |MySQL|pip install mysqlclient|
 
-### Migration
+
+### Database set up (**If required then only**)
+```bash
+flask shell
+from app import db
+db.create_all()
+```
+
+### Migration (**If required then only**)
 
 ```shell
 flask db init
-
 flask db migrate -m "message"
-
 flask db upgrade
-
 ```
 
 ### Run Flask App (script_file_name = app.py)
-
 ```bash
 flask --app script_file_name run
-
 or
-
 py script_file_name.py
 ```
 
